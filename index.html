@@ -1,0 +1,1111 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/filter.css">
+<link rel="stylesheet" href="css/nouislider.min.css">
+        <style>
+        #map {
+            width: 1971px;
+            height: 1183px;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/tailDT.js"></script>
+<script src="js/nouislider.min.js"></script>
+<script src="js/wNumb.js"></script>
+        <script src="data/Cartagena_superficiesinternas_1.js"></script>
+        <script src="data/Vis_arb_CENTRO_2.js"></script>
+        <script src="data/Vis_arb_BARRIADAS_3.js"></script>
+        <script src="data/Vis_arb_DIPESTE_4.js"></script>
+        <script src="data/Vis_arb_DIPOESTE_5.js"></script>
+        <script src="data/Vis_arb_LITORAL_6.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        })
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        function removeEmptyRowsFromPopupContent(content, feature) {
+         var tempDiv = document.createElement('div');
+         tempDiv.innerHTML = content;
+         var rows = tempDiv.querySelectorAll('tr');
+         for (var i = 0; i < rows.length; i++) {
+             var td = rows[i].querySelector('td.visible-with-data');
+             var key = td ? td.id : '';
+             if (td && td.classList.contains('visible-with-data') && feature.properties[key] == null) {
+                 rows[i].parentNode.removeChild(rows[i]);
+             }
+         }
+         return tempDiv.innerHTML;
+        }
+        document.querySelector(".leaflet-popup-pane").addEventListener("load", function(event) {
+          var tagName = event.target.tagName,
+            popup = map._popup;
+          // Also check if flag is already set.
+          if (tagName === "IMG" && popup && !popup._updated) {
+            popup._updated = true; // Set flag to prevent looping.
+            popup.update();
+          }
+        }, true);
+        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            if (bounds_group.getLayers().length) {
+                map.fitBounds(bounds_group.getBounds());
+            }
+        }
+        map.createPane('pane_GoogleMapsSatellite_0');
+        map.getPane('pane_GoogleMapsSatellite_0').style.zIndex = 400;
+        var layer_GoogleMapsSatellite_0 = L.tileLayer('http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleMapsSatellite_0',
+            opacity: 0.207,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 18
+        });
+        layer_GoogleMapsSatellite_0;
+        map.addLayer(layer_GoogleMapsSatellite_0);
+        function pop_Cartagena_superficiesinternas_1(feature, layer) {
+            var popupContent = '<table>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_Cartagena_superficiesinternas_1_0(feature) {
+            switch(String(feature.properties['Elemento'])) {
+                case 'silvestre':
+                    return {
+                pane: 'pane_Cartagena_superficiesinternas_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(103,111,56,0.6039215686274509)',
+                interactive: true,
+            }
+                    break;
+                case 'jardin':
+                    return {
+                pane: 'pane_Cartagena_superficiesinternas_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(48,222,48,0.5607843137254902)',
+                interactive: true,
+            }
+                    break;
+                case 'cesped':
+                    return {
+                pane: 'pane_Cartagena_superficiesinternas_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(112,181,82,0.7019607843137254)',
+                interactive: true,
+            }
+                    break;
+                case 'pavimento duro':
+                    return {
+                pane: 'pane_Cartagena_superficiesinternas_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(178,187,161,0.6352941176470588)',
+                interactive: true,
+            }
+                    break;
+                case 'pavimento blando':
+                    return {
+                pane: 'pane_Cartagena_superficiesinternas_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(246,236,123,0.592156862745098)',
+                interactive: true,
+            }
+                    break;
+                case 'tierra desnuda':
+                    return {
+                pane: 'pane_Cartagena_superficiesinternas_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(238,194,97,0.5803921568627451)',
+                interactive: true,
+            }
+                    break;
+                case 'zona de juegos':
+                    return {
+                pane: 'pane_Cartagena_superficiesinternas_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(139,225,204,0.6196078431372549)',
+                interactive: true,
+            }
+                    break;
+                case 'zona deportiva':
+                    return {
+                pane: 'pane_Cartagena_superficiesinternas_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(84,121,180,0.6431372549019608)',
+                interactive: true,
+            }
+                    break;
+                case 'pergola':
+                    return {
+                pane: 'pane_Cartagena_superficiesinternas_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(131,131,131,0.7529411764705882)',
+                interactive: true,
+            }
+                    break;
+                case 'construccion':
+                    return {
+                pane: 'pane_Cartagena_superficiesinternas_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(94,81,119,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'fuente':
+                    return {
+                pane: 'pane_Cartagena_superficiesinternas_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(126,206,243,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'otros':
+                    return {
+                pane: 'pane_Cartagena_superficiesinternas_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(76,76,76,0.7568627450980392)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_Cartagena_superficiesinternas_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(223,162,64,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Cartagena_superficiesinternas_1');
+        map.getPane('pane_Cartagena_superficiesinternas_1').style.zIndex = 401;
+        map.getPane('pane_Cartagena_superficiesinternas_1').style['mix-blend-mode'] = 'normal';
+        var layer_Cartagena_superficiesinternas_1 = new L.geoJson(json_Cartagena_superficiesinternas_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Cartagena_superficiesinternas_1',
+            layerName: 'layer_Cartagena_superficiesinternas_1',
+            pane: 'pane_Cartagena_superficiesinternas_1',
+            onEachFeature: pop_Cartagena_superficiesinternas_1,
+            style: style_Cartagena_superficiesinternas_1_0,
+        });
+        bounds_group.addLayer(layer_Cartagena_superficiesinternas_1);
+        map.addLayer(layer_Cartagena_superficiesinternas_1);
+        function pop_Vis_arb_CENTRO_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Tipo'] !== null ? autolinker.link(feature.properties['Tipo'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Especie'] !== null ? autolinker.link(feature.properties['Especie'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_Vis_arb_CENTRO_2_0(feature) {
+            switch(String(feature.properties['Tipo2'])) {
+                case 'arbol gra':
+                    return {
+                pane: 'pane_Vis_arb_CENTRO_2',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(33,99,34,0.8588235294117647)',
+                interactive: true,
+            }
+                    break;
+                case 'arbol med':
+                    return {
+                pane: 'pane_Vis_arb_CENTRO_2',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(33,99,34,0.8588235294117647)',
+                interactive: true,
+            }
+                    break;
+                case 'arbol peq':
+                    return {
+                pane: 'pane_Vis_arb_CENTRO_2',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(33,99,34,0.8588235294117647)',
+                interactive: true,
+            }
+                    break;
+                case 'palmera':
+                    return {
+                pane: 'pane_Vis_arb_CENTRO_2',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(125,158,41,0.8588235294117647)',
+                interactive: true,
+            }
+                    break;
+                case 'arbol singular':
+                    return {
+                pane: 'pane_Vis_arb_CENTRO_2',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(90,110,68,0.8588235294117647)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Vis_arb_CENTRO_2');
+        map.getPane('pane_Vis_arb_CENTRO_2').style.zIndex = 402;
+        map.getPane('pane_Vis_arb_CENTRO_2').style['mix-blend-mode'] = 'normal';
+        var layer_Vis_arb_CENTRO_2 = new L.geoJson(json_Vis_arb_CENTRO_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Vis_arb_CENTRO_2',
+            layerName: 'layer_Vis_arb_CENTRO_2',
+            pane: 'pane_Vis_arb_CENTRO_2',
+            onEachFeature: pop_Vis_arb_CENTRO_2,
+            style: style_Vis_arb_CENTRO_2_0,
+        });
+        bounds_group.addLayer(layer_Vis_arb_CENTRO_2);
+        map.addLayer(layer_Vis_arb_CENTRO_2);
+        function pop_Vis_arb_BARRIADAS_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Tipo'] !== null ? autolinker.link(feature.properties['Tipo'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Especie'] !== null ? autolinker.link(feature.properties['Especie'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_Vis_arb_BARRIADAS_3_0(feature) {
+            switch(String(feature.properties['Tipo2'])) {
+                case 'arbol gra':
+                    return {
+                pane: 'pane_Vis_arb_BARRIADAS_3',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(33,99,34,0.8588235294117647)',
+                interactive: true,
+            }
+                    break;
+                case 'arbol med':
+                    return {
+                pane: 'pane_Vis_arb_BARRIADAS_3',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(33,99,34,0.8588235294117647)',
+                interactive: true,
+            }
+                    break;
+                case 'arbol peq':
+                    return {
+                pane: 'pane_Vis_arb_BARRIADAS_3',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(33,99,34,0.8588235294117647)',
+                interactive: true,
+            }
+                    break;
+                case 'palmera':
+                    return {
+                pane: 'pane_Vis_arb_BARRIADAS_3',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(125,158,41,0.8588235294117647)',
+                interactive: true,
+            }
+                    break;
+                case 'arbol singular':
+                    return {
+                pane: 'pane_Vis_arb_BARRIADAS_3',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(90,110,68,0.8588235294117647)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Vis_arb_BARRIADAS_3');
+        map.getPane('pane_Vis_arb_BARRIADAS_3').style.zIndex = 403;
+        map.getPane('pane_Vis_arb_BARRIADAS_3').style['mix-blend-mode'] = 'normal';
+        var layer_Vis_arb_BARRIADAS_3 = new L.geoJson(json_Vis_arb_BARRIADAS_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Vis_arb_BARRIADAS_3',
+            layerName: 'layer_Vis_arb_BARRIADAS_3',
+            pane: 'pane_Vis_arb_BARRIADAS_3',
+            onEachFeature: pop_Vis_arb_BARRIADAS_3,
+            style: style_Vis_arb_BARRIADAS_3_0,
+        });
+        bounds_group.addLayer(layer_Vis_arb_BARRIADAS_3);
+        map.addLayer(layer_Vis_arb_BARRIADAS_3);
+        function pop_Vis_arb_DIPESTE_4(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Tipo'] !== null ? autolinker.link(feature.properties['Tipo'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Especie'] !== null ? autolinker.link(feature.properties['Especie'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_Vis_arb_DIPESTE_4_0(feature) {
+            switch(String(feature.properties['Tipo2'])) {
+                case 'arbol gra':
+                    return {
+                pane: 'pane_Vis_arb_DIPESTE_4',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(33,99,34,0.8588235294117647)',
+                interactive: true,
+            }
+                    break;
+                case 'arbol med':
+                    return {
+                pane: 'pane_Vis_arb_DIPESTE_4',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(33,99,34,0.8588235294117647)',
+                interactive: true,
+            }
+                    break;
+                case 'arbol peq':
+                    return {
+                pane: 'pane_Vis_arb_DIPESTE_4',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(33,99,34,0.8588235294117647)',
+                interactive: true,
+            }
+                    break;
+                case 'palmera':
+                    return {
+                pane: 'pane_Vis_arb_DIPESTE_4',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(125,158,41,0.8588235294117647)',
+                interactive: true,
+            }
+                    break;
+                case 'arbol singular':
+                    return {
+                pane: 'pane_Vis_arb_DIPESTE_4',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(90,110,68,0.8588235294117647)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Vis_arb_DIPESTE_4');
+        map.getPane('pane_Vis_arb_DIPESTE_4').style.zIndex = 404;
+        map.getPane('pane_Vis_arb_DIPESTE_4').style['mix-blend-mode'] = 'normal';
+        var layer_Vis_arb_DIPESTE_4 = new L.geoJson(json_Vis_arb_DIPESTE_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Vis_arb_DIPESTE_4',
+            layerName: 'layer_Vis_arb_DIPESTE_4',
+            pane: 'pane_Vis_arb_DIPESTE_4',
+            onEachFeature: pop_Vis_arb_DIPESTE_4,
+            style: style_Vis_arb_DIPESTE_4_0,
+        });
+        bounds_group.addLayer(layer_Vis_arb_DIPESTE_4);
+        map.addLayer(layer_Vis_arb_DIPESTE_4);
+        function pop_Vis_arb_DIPOESTE_5(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Tipo'] !== null ? autolinker.link(feature.properties['Tipo'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Especie'] !== null ? autolinker.link(feature.properties['Especie'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_Vis_arb_DIPOESTE_5_0(feature) {
+            switch(String(feature.properties['Tipo2'])) {
+                case 'arbol gra':
+                    return {
+                pane: 'pane_Vis_arb_DIPOESTE_5',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(33,99,34,0.8588235294117647)',
+                interactive: true,
+            }
+                    break;
+                case 'arbol med':
+                    return {
+                pane: 'pane_Vis_arb_DIPOESTE_5',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(33,99,34,0.8588235294117647)',
+                interactive: true,
+            }
+                    break;
+                case 'arbol peq':
+                    return {
+                pane: 'pane_Vis_arb_DIPOESTE_5',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(33,99,34,0.8588235294117647)',
+                interactive: true,
+            }
+                    break;
+                case 'palmera':
+                    return {
+                pane: 'pane_Vis_arb_DIPOESTE_5',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(125,158,41,0.8588235294117647)',
+                interactive: true,
+            }
+                    break;
+                case 'arbol singular':
+                    return {
+                pane: 'pane_Vis_arb_DIPOESTE_5',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(90,110,68,0.8588235294117647)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Vis_arb_DIPOESTE_5');
+        map.getPane('pane_Vis_arb_DIPOESTE_5').style.zIndex = 405;
+        map.getPane('pane_Vis_arb_DIPOESTE_5').style['mix-blend-mode'] = 'normal';
+        var layer_Vis_arb_DIPOESTE_5 = new L.geoJson(json_Vis_arb_DIPOESTE_5, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Vis_arb_DIPOESTE_5',
+            layerName: 'layer_Vis_arb_DIPOESTE_5',
+            pane: 'pane_Vis_arb_DIPOESTE_5',
+            onEachFeature: pop_Vis_arb_DIPOESTE_5,
+            style: style_Vis_arb_DIPOESTE_5_0,
+        });
+        bounds_group.addLayer(layer_Vis_arb_DIPOESTE_5);
+        map.addLayer(layer_Vis_arb_DIPOESTE_5);
+        function pop_Vis_arb_LITORAL_6(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Tipo'] !== null ? autolinker.link(feature.properties['Tipo'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Especie'] !== null ? autolinker.link(feature.properties['Especie'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_Vis_arb_LITORAL_6_0(feature) {
+            switch(String(feature.properties['Tipo2'])) {
+                case 'arbol gra':
+                    return {
+                pane: 'pane_Vis_arb_LITORAL_6',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(33,99,34,0.8588235294117647)',
+                interactive: true,
+            }
+                    break;
+                case 'arbol med':
+                    return {
+                pane: 'pane_Vis_arb_LITORAL_6',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(33,99,34,0.8588235294117647)',
+                interactive: true,
+            }
+                    break;
+                case 'arbol peq':
+                    return {
+                pane: 'pane_Vis_arb_LITORAL_6',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(33,99,34,0.8588235294117647)',
+                interactive: true,
+            }
+                    break;
+                case 'palmera':
+                    return {
+                pane: 'pane_Vis_arb_LITORAL_6',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(125,158,41,0.8588235294117647)',
+                interactive: true,
+            }
+                    break;
+                case 'arbol singular':
+                    return {
+                pane: 'pane_Vis_arb_LITORAL_6',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(90,110,68,0.8588235294117647)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Vis_arb_LITORAL_6');
+        map.getPane('pane_Vis_arb_LITORAL_6').style.zIndex = 406;
+        map.getPane('pane_Vis_arb_LITORAL_6').style['mix-blend-mode'] = 'normal';
+        var layer_Vis_arb_LITORAL_6 = new L.geoJson(json_Vis_arb_LITORAL_6, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Vis_arb_LITORAL_6',
+            layerName: 'layer_Vis_arb_LITORAL_6',
+            pane: 'pane_Vis_arb_LITORAL_6',
+            onEachFeature: pop_Vis_arb_LITORAL_6,
+            style: style_Vis_arb_LITORAL_6_0,
+        });
+        bounds_group.addLayer(layer_Vis_arb_LITORAL_6);
+        map.addLayer(layer_Vis_arb_LITORAL_6);
+        setBounds();
+        var mapDiv = document.getElementById('map');
+        var row = document.createElement('div');
+        row.className="row";
+        row.id="all";
+        row.style.height = "100%";
+        var col1 = document.createElement('div');
+        col1.className="col9";
+        col1.id = "mapWindow";
+        col1.style.height = "99%";
+        col1.style.width = "80%";
+        col1.style.display = "inline-block";
+        var col2 = document.createElement('div');
+        col2.className="col3";
+        col2.id = "menu";
+        col2.style.display = "inline-block";
+        mapDiv.parentNode.insertBefore(row, mapDiv);
+        document.getElementById("all").appendChild(col1);
+        document.getElementById("all").appendChild(col2);
+        col1.appendChild(mapDiv)
+        var Filters = {"Especie": "str"};
+        function filterFunc() {
+          map.eachLayer(function(lyr){
+          if ("options" in lyr && "dataVar" in lyr["options"]){
+            features = this[lyr["options"]["dataVar"]].features.slice(0);
+            try{
+              for (key in Filters){
+                keyS = key.replace(/[^a-zA-Z0-9_]/g, "")
+                if (Filters[key] == "str" || Filters[key] == "bool"){
+                  var selection = [];
+                  var options = document.getElementById("sel_" + keyS).options
+                  for (var i=0; i < options.length; i++) {
+                    if (options[i].selected) selection.push(options[i].value);
+                  }
+                    try{
+                      if (key in features[0].properties){
+                        for (i = features.length - 1;
+                          i >= 0; --i){
+                          if (selection.indexOf(
+                          features[i].properties[key])<0
+                          && selection.length>0) {
+                          features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                  }
+                }
+                if (Filters[key] == "int"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (parseInt(features[i].properties[key])
+                          < sliderVals[0]
+                          || parseInt(features[i].properties[key])
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "real"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (features[i].properties[key]
+                          < sliderVals[0]
+                          || features[i].properties[key]
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "date"
+                  || Filters[key] == "datetime"
+                  || Filters[key] == "time"){
+                  try{
+                    if (key in features[0].properties){
+                      HTMLkey = key.replace(/[&\/\\#,+()$~%.'":*?<>{} ]/g, '');
+                      startdate = document.getElementById("dat_" +
+                        HTMLkey + "_date1").value.replace(" ", "T");
+                      enddate = document.getElementById("dat_" +
+                        HTMLkey + "_date2").value.replace(" ", "T");
+                      for (i = features.length - 1; i >= 0; --i){
+                        if (features[i].properties[key] < startdate
+                          || features[i].properties[key] > enddate){
+                          features.splice(i,1);
+                        }
+                      }
+                    }
+                  } catch(err){
+                  }
+                }
+              }
+            } catch(err){
+            }
+          this[lyr["options"]["layerName"]].clearLayers();
+          this[lyr["options"]["layerName"]].addData(features);
+          }
+          })
+        }
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_Especie = document.createElement('div');
+            div_Especie.id = "div_Especie";
+            div_Especie.className= "filterselect";
+            document.getElementById("menu").appendChild(div_Especie);
+            sel_Especie = document.createElement('select');
+            sel_Especie.multiple = true;
+            sel_Especie.size = 10;
+            sel_Especie.id = "sel_Especie";
+            var Especie_options_str = "<option value='' unselected></option>";
+            sel_Especie.onchange = function(){filterFunc()};
+            Especie_options_str  += '<option value="NULL">NULL</option>';
+            Especie_options_str  += '<option value="Abies nordmanniana">Abies nordmanniana</option>';
+            Especie_options_str  += '<option value="Acacia dealbata">Acacia dealbata</option>';
+            Especie_options_str  += '<option value="Acacia longifolia">Acacia longifolia</option>';
+            Especie_options_str  += '<option value="Acacia saligna">Acacia saligna</option>';
+            Especie_options_str  += '<option value="Acer campestre">Acer campestre</option>';
+            Especie_options_str  += '<option value="Acer negundo">Acer negundo</option>';
+            Especie_options_str  += '<option value="Agave americana">Agave americana</option>';
+            Especie_options_str  += '<option value="Agave spp.">Agave spp.</option>';
+            Especie_options_str  += '<option value="Ailanthus altissima">Ailanthus altissima</option>';
+            Especie_options_str  += '<option value="Albizia julibrissin">Albizia julibrissin</option>';
+            Especie_options_str  += '<option value="Alcholea glandulosa">Alcholea glandulosa</option>';
+            Especie_options_str  += '<option value="Anthocletsia">Anthocletsia</option>';
+            Especie_options_str  += '<option value="Araucaria excelsa">Araucaria excelsa</option>';
+            Especie_options_str  += '<option value="Araucaria heterophylla">Araucaria heterophylla</option>';
+            Especie_options_str  += '<option value="Arbutus unedo">Arbutus unedo</option>';
+            Especie_options_str  += '<option value="Asparagus densiflorus">Asparagus densiflorus</option>';
+            Especie_options_str  += '<option value="Aspidistra elatior">Aspidistra elatior</option>';
+            Especie_options_str  += '<option value="Baccaris salicifolia">Baccaris salicifolia</option>';
+            Especie_options_str  += '<option value="Bahuinia purpurea">Bahuinia purpurea</option>';
+            Especie_options_str  += '<option value="Bahuinia variegata">Bahuinia variegata</option>';
+            Especie_options_str  += '<option value="Beaucarnea recurvata">Beaucarnea recurvata</option>';
+            Especie_options_str  += '<option value="Bismarckia nobilis">Bismarckia nobilis</option>';
+            Especie_options_str  += '<option value="Bougainvillea glabra">Bougainvillea glabra</option>';
+            Especie_options_str  += '<option value="Brachychiton populneum">Brachychiton populneum</option>';
+            Especie_options_str  += '<option value="Brachychiton rupestris">Brachychiton rupestris</option>';
+            Especie_options_str  += '<option value="Brahea armata">Brahea armata</option>';
+            Especie_options_str  += '<option value="Buganvillea">Buganvillea</option>';
+            Especie_options_str  += '<option value="Butia capitata">Butia capitata</option>';
+            Especie_options_str  += '<option value="Buxus sempervirens">Buxus sempervirens</option>';
+            Especie_options_str  += '<option value="Caestrum nocturnum">Caestrum nocturnum</option>';
+            Especie_options_str  += '<option value="Callistemon spp.">Callistemon spp.</option>';
+            Especie_options_str  += '<option value="Casuarina cunninghamiana">Casuarina cunninghamiana</option>';
+            Especie_options_str  += '<option value="Casuarina equisetifolia">Casuarina equisetifolia</option>';
+            Especie_options_str  += '<option value="Catalpa bignonioides">Catalpa bignonioides</option>';
+            Especie_options_str  += '<option value="Catalpa bungei">Catalpa bungei</option>';
+            Especie_options_str  += '<option value="Cedrus atlantica">Cedrus atlantica</option>';
+            Especie_options_str  += '<option value="Cedrus deodara">Cedrus deodara</option>';
+            Especie_options_str  += '<option value="Ceiba especiosa">Ceiba especiosa</option>';
+            Especie_options_str  += '<option value="Celtis australis">Celtis australis</option>';
+            Especie_options_str  += '<option value="Ceratonia siliqua">Ceratonia siliqua</option>';
+            Especie_options_str  += '<option value="Cercis siliquastrum">Cercis siliquastrum</option>';
+            Especie_options_str  += '<option value="Chamaerops humilis">Chamaerops humilis</option>';
+            Especie_options_str  += '<option value="Chrorisia especiosa">Chrorisia especiosa</option>';
+            Especie_options_str  += '<option value="Cinnamomum camphora">Cinnamomum camphora</option>';
+            Especie_options_str  += '<option value="Citrus aurantium">Citrus aurantium</option>';
+            Especie_options_str  += '<option value="Citrus limon">Citrus limon</option>';
+            Especie_options_str  += '<option value="Cocos nucifera">Cocos nucifera</option>';
+            Especie_options_str  += '<option value="Conocarpus erectus">Conocarpus erectus</option>';
+            Especie_options_str  += '<option value="Cordyline australis">Cordyline australis</option>';
+            Especie_options_str  += '<option value="Corylus avellana">Corylus avellana</option>';
+            Especie_options_str  += '<option value="Cotoneaster spp.">Cotoneaster spp.</option>';
+            Especie_options_str  += '<option value="Cupressocyparis x leylandii">Cupressocyparis x leylandii</option>';
+            Especie_options_str  += '<option value="Cupressus arizonica">Cupressus arizonica</option>';
+            Especie_options_str  += '<option value="Cupressus lambertiana">Cupressus lambertiana</option>';
+            Especie_options_str  += '<option value="Cupressus macrocarpa">Cupressus macrocarpa</option>';
+            Especie_options_str  += '<option value="Cupressus sempervirens">Cupressus sempervirens</option>';
+            Especie_options_str  += '<option value="Cycas revoluta">Cycas revoluta</option>';
+            Especie_options_str  += '<option value="Dasylirion longissimun">Dasylirion longissimun</option>';
+            Especie_options_str  += '<option value="Dododaena viscosa">Dododaena viscosa</option>';
+            Especie_options_str  += '<option value="Dracaena cordyline">Dracaena cordyline</option>';
+            Especie_options_str  += '<option value="Dracanea drago">Dracanea drago</option>';
+            Especie_options_str  += '<option value="Dypsis lutencens">Dypsis lutencens</option>';
+            Especie_options_str  += '<option value="Elaeagnus angustifolia">Elaeagnus angustifolia</option>';
+            Especie_options_str  += '<option value="Ephedra">Ephedra</option>';
+            Especie_options_str  += '<option value="Eriobotrya japonica">Eriobotrya japonica</option>';
+            Especie_options_str  += '<option value="Erythrina caffra">Erythrina caffra</option>';
+            Especie_options_str  += '<option value="Erythrina cristagalli">Erythrina cristagalli</option>';
+            Especie_options_str  += '<option value="Eucalyptus camaldulensis">Eucalyptus camaldulensis</option>';
+            Especie_options_str  += '<option value="Eucalyptus polianthemos">Eucalyptus polianthemos</option>';
+            Especie_options_str  += '<option value="Euphorbia spp.">Euphorbia spp.</option>';
+            Especie_options_str  += '<option value="Euryops pectinatus">Euryops pectinatus</option>';
+            Especie_options_str  += '<option value="Evonymus fortunei">Evonymus fortunei</option>';
+            Especie_options_str  += '<option value="Evonymus japonicus "Microphyllus"">Evonymus japonicus "Microphyllus"</option>';
+            Especie_options_str  += '<option value="Ficus Benjamina">Ficus Benjamina</option>';
+            Especie_options_str  += '<option value="Ficus Retusa">Ficus Retusa</option>';
+            Especie_options_str  += '<option value="Ficus Rubiginosa">Ficus Rubiginosa</option>';
+            Especie_options_str  += '<option value="Ficus arbustiva">Ficus arbustiva</option>';
+            Especie_options_str  += '<option value="Ficus australis">Ficus australis</option>';
+            Especie_options_str  += '<option value="Ficus carica">Ficus carica</option>';
+            Especie_options_str  += '<option value="Ficus elastica">Ficus elastica</option>';
+            Especie_options_str  += '<option value="Ficus longifolia">Ficus longifolia</option>';
+            Especie_options_str  += '<option value="Ficus lyrata">Ficus lyrata</option>';
+            Especie_options_str  += '<option value="Ficus macrophylla">Ficus macrophylla</option>';
+            Especie_options_str  += '<option value="Ficus microcarpa">Ficus microcarpa</option>';
+            Especie_options_str  += '<option value="Firmiana simplex">Firmiana simplex</option>';
+            Especie_options_str  += '<option value="Fraxinus angustifolia">Fraxinus angustifolia</option>';
+            Especie_options_str  += '<option value="Fraxinus excelsior">Fraxinus excelsior</option>';
+            Especie_options_str  += '<option value="Fraxinus valetunia">Fraxinus valetunia</option>';
+            Especie_options_str  += '<option value="Ginkgo biloba">Ginkgo biloba</option>';
+            Especie_options_str  += '<option value="Gleditsia triacanthos">Gleditsia triacanthos</option>';
+            Especie_options_str  += '<option value="Grevillea robusta">Grevillea robusta</option>';
+            Especie_options_str  += '<option value="Grevillea spp.">Grevillea spp.</option>';
+            Especie_options_str  += '<option value="Hedera helix">Hedera helix</option>';
+            Especie_options_str  += '<option value="Heteromeles arbutifolia">Heteromeles arbutifolia</option>';
+            Especie_options_str  += '<option value="Hibiscus Syriacus">Hibiscus Syriacus</option>';
+            Especie_options_str  += '<option value="Howea belmoreana">Howea belmoreana</option>';
+            Especie_options_str  += '<option value="Howea forsteriana">Howea forsteriana</option>';
+            Especie_options_str  += '<option value="Illex cananariensis">Illex cananariensis</option>';
+            Especie_options_str  += '<option value="Illex rotunda">Illex rotunda</option>';
+            Especie_options_str  += '<option value="Jacaranda mimosifolia">Jacaranda mimosifolia</option>';
+            Especie_options_str  += '<option value="Jasminum spp.">Jasminum spp.</option>';
+            Especie_options_str  += '<option value="Juglans regia">Juglans regia</option>';
+            Especie_options_str  += '<option value="Juniperus spp.">Juniperus spp.</option>';
+            Especie_options_str  += '<option value="Justicia adhatoda">Justicia adhatoda</option>';
+            Especie_options_str  += '<option value="Kalanchoe spp.">Kalanchoe spp.</option>';
+            Especie_options_str  += '<option value="Lagunaria patersonia">Lagunaria patersonia</option>';
+            Especie_options_str  += '<option value="Lantana camara">Lantana camara</option>';
+            Especie_options_str  += '<option value="Laurus nobilis">Laurus nobilis</option>';
+            Especie_options_str  += '<option value="Leucaena leucocephalla">Leucaena leucocephalla</option>';
+            Especie_options_str  += '<option value="Ligustrum japonicum">Ligustrum japonicum</option>';
+            Especie_options_str  += '<option value="Ligustrum lucidum">Ligustrum lucidum</option>';
+            Especie_options_str  += '<option value="Livistona australis">Livistona australis</option>';
+            Especie_options_str  += '<option value="Lonicera spp.">Lonicera spp.</option>';
+            Especie_options_str  += '<option value="Magnolia grandiflora">Magnolia grandiflora</option>';
+            Especie_options_str  += '<option value="Mahonia aquifolia">Mahonia aquifolia</option>';
+            Especie_options_str  += '<option value="Malus spp.">Malus spp.</option>';
+            Especie_options_str  += '<option value="Melia azedarach">Melia azedarach</option>';
+            Especie_options_str  += '<option value="Metrosideros excelsa">Metrosideros excelsa</option>';
+            Especie_options_str  += '<option value="Mimosae">Mimosae</option>';
+            Especie_options_str  += '<option value="Morus alba">Morus alba</option>';
+            Especie_options_str  += '<option value="Morus alba "Pendula"">Morus alba "Pendula"</option>';
+            Especie_options_str  += '<option value="Morus nigra">Morus nigra</option>';
+            Especie_options_str  += '<option value="Morus rubra">Morus rubra</option>';
+            Especie_options_str  += '<option value="Myoporum laetum">Myoporum laetum</option>';
+            Especie_options_str  += '<option value="Nerium oleander">Nerium oleander</option>';
+            Especie_options_str  += '<option value="Olea europaea">Olea europaea</option>';
+            Especie_options_str  += '<option value="Opuntia ficus indica">Opuntia ficus indica</option>';
+            Especie_options_str  += '<option value="Parkinsonia aculeata">Parkinsonia aculeata</option>';
+            Especie_options_str  += '<option value="Paulownia tomentosa">Paulownia tomentosa</option>';
+            Especie_options_str  += '<option value="Pemus boldus">Pemus boldus</option>';
+            Especie_options_str  += '<option value="Phoenix canariensis">Phoenix canariensis</option>';
+            Especie_options_str  += '<option value="Phoenix dactylifera">Phoenix dactylifera</option>';
+            Especie_options_str  += '<option value="Phoenix robellini">Phoenix robellini</option>';
+            Especie_options_str  += '<option value="Photinia glabra">Photinia glabra</option>';
+            Especie_options_str  += '<option value="Pinus canariensis">Pinus canariensis</option>';
+            Especie_options_str  += '<option value="Pinus eldarica">Pinus eldarica</option>';
+            Especie_options_str  += '<option value="Pinus halepensis">Pinus halepensis</option>';
+            Especie_options_str  += '<option value="Pinus pinaster">Pinus pinaster</option>';
+            Especie_options_str  += '<option value="Pinus pinea">Pinus pinea</option>';
+            Especie_options_str  += '<option value="Pistacia lentiscus">Pistacia lentiscus</option>';
+            Especie_options_str  += '<option value="Pistacia terebinthus">Pistacia terebinthus</option>';
+            Especie_options_str  += '<option value="Pittosporum tobira">Pittosporum tobira</option>';
+            Especie_options_str  += '<option value="Platanus occidentalis">Platanus occidentalis</option>';
+            Especie_options_str  += '<option value="Platanus x hispanica">Platanus x hispanica</option>';
+            Especie_options_str  += '<option value="Polygala myrtifolia">Polygala myrtifolia</option>';
+            Especie_options_str  += '<option value="Populus alba">Populus alba</option>';
+            Especie_options_str  += '<option value="Populus bolleana">Populus bolleana</option>';
+            Especie_options_str  += '<option value="Populus deltoides">Populus deltoides</option>';
+            Especie_options_str  += '<option value="Populus nigra">Populus nigra</option>';
+            Especie_options_str  += '<option value="Populus simonii">Populus simonii</option>';
+            Especie_options_str  += '<option value="Populus x canadiensis">Populus x canadiensis</option>';
+            Especie_options_str  += '<option value="Prunus cerasifera "Pisardii"">Prunus cerasifera "Pisardii"</option>';
+            Especie_options_str  += '<option value="Prunus dulcis">Prunus dulcis</option>';
+            Especie_options_str  += '<option value="Prunus laurocerasus">Prunus laurocerasus</option>';
+            Especie_options_str  += '<option value="Prunus persica">Prunus persica</option>';
+            Especie_options_str  += '<option value="Punica granatum">Punica granatum</option>';
+            Especie_options_str  += '<option value="Punica granatum "Nana"">Punica granatum "Nana"</option>';
+            Especie_options_str  += '<option value="Pyrus communis">Pyrus communis</option>';
+            Especie_options_str  += '<option value="Pytolacca dioica">Pytolacca dioica</option>';
+            Especie_options_str  += '<option value="Quercus faginea">Quercus faginea</option>';
+            Especie_options_str  += '<option value="Quercus grisea">Quercus grisea</option>';
+            Especie_options_str  += '<option value="Quercus ilex">Quercus ilex</option>';
+            Especie_options_str  += '<option value="Quercus robur">Quercus robur</option>';
+            Especie_options_str  += '<option value="Quercus rotundifolia">Quercus rotundifolia</option>';
+            Especie_options_str  += '<option value="Quercus sober">Quercus sober</option>';
+            Especie_options_str  += '<option value="Raphis excelsa">Raphis excelsa</option>';
+            Especie_options_str  += '<option value="Rhamnus alaternus">Rhamnus alaternus</option>';
+            Especie_options_str  += '<option value="Rhus spp.">Rhus spp.</option>';
+            Especie_options_str  += '<option value="Robinia pseudoacacia">Robinia pseudoacacia</option>';
+            Especie_options_str  += '<option value="Rosa spp.">Rosa spp.</option>';
+            Especie_options_str  += '<option value="Rosmarinus officinalis var. prostratus">Rosmarinus officinalis var. prostratus</option>';
+            Especie_options_str  += '<option value="Sabal minor">Sabal minor</option>';
+            Especie_options_str  += '<option value="Sabal palmeto">Sabal palmeto</option>';
+            Especie_options_str  += '<option value="Salix alba">Salix alba</option>';
+            Especie_options_str  += '<option value="Salix babylonica">Salix babylonica</option>';
+            Especie_options_str  += '<option value="Salix nigra">Salix nigra</option>';
+            Especie_options_str  += '<option value="Schefflera arboricola">Schefflera arboricola</option>';
+            Especie_options_str  += '<option value="Schinus molle">Schinus molle</option>';
+            Especie_options_str  += '<option value="Solanum rantonnetii">Solanum rantonnetii</option>';
+            Especie_options_str  += '<option value="Solanum spp.">Solanum spp.</option>';
+            Especie_options_str  += '<option value="Sophora japonica">Sophora japonica</option>';
+            Especie_options_str  += '<option value="Sorbus domestica">Sorbus domestica</option>';
+            Especie_options_str  += '<option value="Strelitzia reginae">Strelitzia reginae</option>';
+            Especie_options_str  += '<option value="Syagrus romanzoffiana">Syagrus romanzoffiana</option>';
+            Especie_options_str  += '<option value="Tamarindus indica">Tamarindus indica</option>';
+            Especie_options_str  += '<option value="Tamarix spp.">Tamarix spp.</option>';
+            Especie_options_str  += '<option value="Taxus baccata">Taxus baccata</option>';
+            Especie_options_str  += '<option value="Tetraclinis articulata">Tetraclinis articulata</option>';
+            Especie_options_str  += '<option value="Thevetia peruana">Thevetia peruana</option>';
+            Especie_options_str  += '<option value="Thuja spp.">Thuja spp.</option>';
+            Especie_options_str  += '<option value="Tilia cordata">Tilia cordata</option>';
+            Especie_options_str  += '<option value="Tilia tomentosa">Tilia tomentosa</option>';
+            Especie_options_str  += '<option value="Tipuana Tipu">Tipuana Tipu</option>';
+            Especie_options_str  += '<option value="Trachycarpus fortunei">Trachycarpus fortunei</option>';
+            Especie_options_str  += '<option value="Triplaris americana">Triplaris americana</option>';
+            Especie_options_str  += '<option value="Ulmus glabra">Ulmus glabra</option>';
+            Especie_options_str  += '<option value="Ulmus minor">Ulmus minor</option>';
+            Especie_options_str  += '<option value="Ulmus pumila">Ulmus pumila</option>';
+            Especie_options_str  += '<option value="Viburnum opulus">Viburnum opulus</option>';
+            Especie_options_str  += '<option value="Vitex agnus-castus">Vitex agnus-castus</option>';
+            Especie_options_str  += '<option value="Vitis vinifera">Vitis vinifera</option>';
+            Especie_options_str  += '<option value="Washingtonia">Washingtonia</option>';
+            Especie_options_str  += '<option value="Washingtonia filifera">Washingtonia filifera</option>';
+            Especie_options_str  += '<option value="Washingtonia robusta">Washingtonia robusta</option>';
+            Especie_options_str  += '<option value="Yucca gloriosa">Yucca gloriosa</option>';
+            Especie_options_str  += '<option value="Yucca spp.">Yucca spp.</option>';
+            Especie_options_str  += '<option value="Ziziphus jujuba">Ziziphus jujuba</option>';
+            Especie_options_str  += '<option value="_Acacia dealbata">_Acacia dealbata</option>';
+            Especie_options_str  += '<option value="_Acer negundo">_Acer negundo</option>';
+            Especie_options_str  += '<option value="_Brachychiton populneum">_Brachychiton populneum</option>';
+            Especie_options_str  += '<option value="_Chamaerops humilis">_Chamaerops humilis</option>';
+            Especie_options_str  += '<option value="_Cupressus sempervirens">_Cupressus sempervirens</option>';
+            Especie_options_str  += '<option value="_Eucalyptus camaldulensis">_Eucalyptus camaldulensis</option>';
+            Especie_options_str  += '<option value="_Ficus Benjamina">_Ficus Benjamina</option>';
+            Especie_options_str  += '<option value="_Ficus carica">_Ficus carica</option>';
+            Especie_options_str  += '<option value="_Ficus macrophylla">_Ficus macrophylla</option>';
+            Especie_options_str  += '<option value="_Ficus microcarpa">_Ficus microcarpa</option>';
+            Especie_options_str  += '<option value="_Jacaranda mimosifolia">_Jacaranda mimosifolia</option>';
+            Especie_options_str  += '<option value="_Ligustrum japonicum">_Ligustrum japonicum</option>';
+            Especie_options_str  += '<option value="_Morus alba">_Morus alba</option>';
+            Especie_options_str  += '<option value="_Olea europaea">_Olea europaea</option>';
+            Especie_options_str  += '<option value="_Phoenix dactylifera">_Phoenix dactylifera</option>';
+            Especie_options_str  += '<option value="_Pinus canariensis">_Pinus canariensis</option>';
+            Especie_options_str  += '<option value="_Pinus halepensis">_Pinus halepensis</option>';
+            Especie_options_str  += '<option value="_Pinus pinea">_Pinus pinea</option>';
+            Especie_options_str  += '<option value="_Populus alba">_Populus alba</option>';
+            Especie_options_str  += '<option value="_Schinus molle">_Schinus molle</option>';
+            Especie_options_str  += '<option value="_Tamarix spp.">_Tamarix spp.</option>';
+            Especie_options_str  += '<option value="_Tetraclinis articulata">_Tetraclinis articulata</option>';
+            Especie_options_str  += '<option value="_Tipuana Tipu">_Tipuana Tipu</option>';
+            Especie_options_str  += '<option value="_Washingtonia">_Washingtonia</option>';
+            Especie_options_str  += '<option value="_Yucca spp.">_Yucca spp.</option>';
+            Especie_options_str  += '<option value="brachychiton acerifolius">brachychiton acerifolius</option>';
+            Especie_options_str  += '<option value="pinus lambertiana">pinus lambertiana</option>';
+            Especie_options_str  += '<option value="schinus terebinthifolius">schinus terebinthifolius</option>';
+            sel_Especie.innerHTML = Especie_options_str;
+            div_Especie.appendChild(sel_Especie);
+            var lab_Especie = document.createElement('div');
+            lab_Especie.innerHTML = 'Especie';
+            lab_Especie.className = 'filterlabel';
+            div_Especie.appendChild(lab_Especie);
+            var reset_Especie = document.createElement('div');
+            reset_Especie.innerHTML = 'clear filter';
+            reset_Especie.className = 'filterlabel';
+            reset_Especie.onclick = function() {
+                var options = document.getElementById("sel_Especie").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_Especie.appendChild(reset_Especie);
+        </script>
+    </body>
+</html>
